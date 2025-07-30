@@ -1,0 +1,11 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Introducción}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Introducción al Proyecto}{2}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Diagrama ER y justificación de la normalización}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Diagrama Entidad-Relación}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Justificación de la normalización}{3}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Implementación en MySQL}{4}{section.3}%
+\contentsline {section}{\numberline {4}Implementación en SQL}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Creación de la base de datos y tablas}{4}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Tabla Empleados}{4}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Tabla Tabulador}{4}{subsection.4.3}%

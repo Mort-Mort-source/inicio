@@ -1,0 +1,70 @@
+
+
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    frame=single,
+    keepspaces=true,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    language=SQL
+}
+
+
+
+\section{Implementación en SQL}
+
+\subsection{Creación de la base de datos y tablas}
+
+\begin{lstlisting}
+CREATE DATABASE EMPRESA;
+USE EMPRESA;
+\end{lstlisting}
+
+\subsection{Tabla Empleados}
+
+\begin{lstlisting}
+CREATE TABLE Empleados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    fecha_de_ingreso DATE,
+    salario DECIMAL(10,2),
+    categoria VARCHAR(100)
+);
+\end{lstlisting}
+
+\textbf{Descripción de campos:}
+\begin{itemize}
+    \item \texttt{id}: Identificador único del empleado (clave primaria)
+    \item \texttt{nombre}: Nombre completo del empleado
+    \item \texttt{fecha\_de\_ingreso}: Fecha de contratación
+    \item \texttt{salario}: Remuneración del empleado
+    \item \texttt{categoria}: Categoría o puesto del empleado
+\end{itemize}
+
+\subsection{Tabla Tabulador}
+
+\begin{lstlisting}
+CREATE TABLE Tabulador (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_puesto VARCHAR(100),
+    sueldo DECIMAL(10,2),
+    dias_antiguedad INT
+);
+\end{lstlisting}
+
+\textbf{Descripción de campos:}
+\begin{itemize}
+    \item \texttt{id}: Identificador único del registro (clave primaria)
+    \item \texttt{nombre\_puesto}: Nombre del puesto o categoría
+    \item \texttt{sueldo}: Salario base para el puesto
+    \item \texttt{dias\_antiguedad}: Días requeridos para antigüedad en el puesto
+\end{itemize}
+
+\end{document}
