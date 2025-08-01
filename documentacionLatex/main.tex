@@ -12,13 +12,27 @@
 \usepackage{xcolor}
 \usepackage{framed}
 
+% Configuración esencial para listings la vaina que permite mostrar código SQL
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    language=SQL,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    captionpos=b
+}
 
+% Configuración de página
 \geometry{letterpaper, margin=2.5cm}
 \setlength{\parskip}{1em}
 \setlength{\parindent}{0pt}
 \titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
 
+% Configuración de hipervínculos
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -29,7 +43,7 @@
 
 \begin{document}
 
-% potada
+% Portada
 \input{portada}
 
 % Índice
@@ -40,22 +54,26 @@
 \subsection{Introducción al Proyecto}
 \input{descripcionProyecto}
 
-% asi se hacen las secciones
 \section{Diagrama ER y justificación de la normalización}
-% hasta aca
-
-%asi se hacen las subsecciones
 \subsection{Diagrama Entidad-Relación}
 \input{diagramaER}
-%hasta aca
 
 \subsection{Justificación de la normalización}
 \input{justificacionNormalizacion}
 
-\section{Implementación  de tablas en MySQL}
+\section{Implementación de tablas en MySQL}
 \input{implementacion}
 
-\section{Implementación de indices y triggers en MySQL}
+
+\section{Implementación de índices y triggers en MySQL}
 \input{implementacionIndicesTriggers}
+
+\section{Consultas de almacenamiento en MySQL}
+\input{consultas}
+
+\section{Procedimientos almacenados en MySQL}
+\input{procedimientosAlmacenados}
+
+
 
 \end{document}

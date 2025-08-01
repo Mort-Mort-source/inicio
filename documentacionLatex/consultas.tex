@@ -1,0 +1,99 @@
+En esta sección se presentan tres procedimientos almacenados implementados en MySQL que permiten realizar consultas comunes dentro del sistema de gestión de una tienda en línea. Cada procedimiento tiene una finalidad específica y fue optimizado para consultar múltiples tablas relacionadas.
+
+\subsection{Productos disponibles por categoría, ordenados por precio}
+
+Este procedimiento lista todos los productos disponibles (con stock mayor a cero), agrupados por categoría y ordenados por precio en orden ascendente.
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE PROCEDURE ProductosPorCategoria()
+BEGIN
+  SELECT 
+    c.nombre AS categoria,
+    p.nombre AS producto,
+    p.descripcion,
+    p.precio,
+    p.stock
+  FROM Producto p
+  JOIN Categoria c ON p.id_categoria = c.id_categoria
+  WHERE p.stock > 0
+  ORDER BY c.nombre, p.precio ASC;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+
+\textbf{Explicación:}
+\begin{itemize}
+  \item Se realiza un unión (\texttt{JOIN}) entre la tabla \texttt{Producto} y \texttt{Categoria}.
+  \item Solo se incluyen productos disponibles, es decir, con \texttt{stock > 0}.
+  \item El ordenamiento se realiza primero por nombre de categoría y luego por precio.
+\end{itemize}
+
+\subsection{Clientes con pedidos pendientes y total de compras}
+
+Este procedimiento muestra los clientes que tienen pedidos en estado pendiente, junto con el total de pedidos que han realizado.
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE PROCEDURE PedidosPendientes()
+BEGIN
+  SELECT 
+    cl.id_cliente,
+    cl.nombre,
+    cl.correo,
+    COUNT(CASE WHEN p.estado = 'pendiente' THEN 1 END) AS pedidos_pendientes,
+    COUNT(p.id_pedido) AS total_pedidos
+  FROM Cliente cl
+  LEFT JOIN Pedido p ON cl.id_cliente = p.id_cliente
+  GROUP BY cl.id_cliente, cl.nombre, cl.correo
+  HAVING pedidos_pendientes > 0;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+
+\textbf{Explicación:}
+\begin{itemize}
+  \item Se realiza una \texttt{LEFT JOIN} entre clientes y sus pedidos.
+  \item Se usa una condición \texttt{CASE WHEN} para contar únicamente los pedidos pendientes.
+  \item Se utiliza \texttt{HAVING} para filtrar y mostrar solo los clientes con al menos un pedido pendiente.
+\end{itemize}
+
+\subsection{Top 5 productos con mejor calificación promedio}
+
+Este procedimiento obtiene los cinco productos mejor calificados según la media de reseñas dadas por los clientes.
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE PROCEDURE TopProductos()
+BEGIN
+  SELECT 
+    p.nombre AS producto,
+    ROUND(AVG(r.calificacion), 2) AS promedio_calificacion,
+    COUNT(r.id_resena) AS total_resenas
+  FROM Producto p
+  JOIN Resena r ON p.id_producto = r.id_producto
+  GROUP BY p.id_producto, p.nombre
+  HAVING COUNT(r.id_resena) > 0
+  ORDER BY promedio_calificacion DESC
+  LIMIT 5;
+END;
+//
+
+DELIMITER;
+\end{lstlisting}
+
+\textbf{Explicación:}
+\begin{itemize}
+  \item Se calcula el promedio de calificaciones para cada producto.
+  \item Se filtran productos que no tienen reseñas.
+  \item Se ordena el resultado en orden descendente por calificación y se limita a los primeros cinco.
+\end{itemize}
+
+\newpage

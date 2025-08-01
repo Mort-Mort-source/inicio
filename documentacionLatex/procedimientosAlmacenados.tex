@@ -1,0 +1,145 @@
+En esta sección se presentan los procedimientos almacenados implementados para gestionar operaciones fundamentales del sistema. Se incluyen:
+
+\begin{enumerate}
+  \item \textbf{Registrar un nuevo pedido:} Verifica el límite de 5 pedidos pendientes por cliente y que haya stock suficiente. \emph{Nota:} En este procedimiento se actualiza el stock de los productos, por lo que no es necesario un procedimiento adicional para la actualización del stock.
+  \item \textbf{Registrar una reseña:} Permite insertar una reseña, delegando la validación a un trigger ya creado. \emph{Nota:} La validación se realiza en el trigger que se encuentra en la sección \textbf{Implementación de índices y triggers en MySQL, Sub sección: ``Trigger: validar reseñas solo de clientes que hayan comprado el producto''}.
+  \item \textbf{Cambiar el estado de un pedido:} Permite actualizar de forma segura el estado de un pedido (por ejemplo, de pendiente a enviado).
+\end{enumerate}
+
+\subsection{1. Registrar un nuevo pedido}
+
+El siguiente procedimiento almacena un nuevo pedido, verificando que el cliente no tenga ya 5 pedidos pendientes y que exista stock suficiente para cada producto incluido. Se utiliza un parámetro JSON para enviar los detalles del pedido (lista de productos y cantidades).
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE PROCEDURE RegistrarPedido(
+  IN p_id_cliente INT,
+  IN p_fecha DATE,
+  IN p_detalles JSON -- Ej: [{"id_producto":1, "cantidad":2}, {"id_producto":3, "cantidad":1}]
+)
+BEGIN
+  DECLARE pedidos_pend INT;
+  DECLARE stock_actual INT;
+  DECLARE i INT DEFAULT 0;
+  DECLARE detalles_count INT;
+  DECLARE id_pedido_nuevo INT;
+  DECLARE v_id_producto INT;
+  DECLARE v_cantidad INT;
+
+  -- Verificar que el cliente tenga menos de 5 pedidos pendientes
+  SELECT COUNT(*) INTO pedidos_pend
+  FROM Pedido
+  WHERE id_cliente = p_id_cliente AND estado = 'pendiente';
+
+  IF pedidos_pend >= 5 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'El cliente ya tiene 5 pedidos pendientes.';
+  END IF;
+
+  -- Crear el pedido
+  INSERT INTO Pedido(fecha, estado, id_cliente)
+  VALUES (p_fecha, 'pendiente', p_id_cliente);
+
+  SET id_pedido_nuevo = LAST_INSERT_ID();
+  SET detalles_count = JSON_LENGTH(p_detalles);
+
+  -- Procesar cada detalle del pedido
+  WHILE i < detalles_count DO
+    SET v_id_producto = JSON_UNQUOTE(JSON_EXTRACT(p_detalles, CONCAT('$[', i, '].id_producto')));
+    SET v_cantidad = JSON_UNQUOTE(JSON_EXTRACT(p_detalles, CONCAT('$[', i, '].cantidad')));
+
+    -- Verificar stock disponible
+    SELECT stock INTO stock_actual FROM Producto WHERE id_producto = v_id_producto;
+    IF stock_actual < v_cantidad THEN
+      SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = CONCAT('Stock insuficiente para el producto ID: ', v_id_producto);
+    END IF;
+
+    -- Insertar detalle del pedido
+    INSERT INTO DetallePedido(id_pedido, id_producto, cantidad, precio_unitario)
+    SELECT id_pedido_nuevo, v_id_producto, v_cantidad, precio
+    FROM Producto
+    WHERE id_producto = v_id_producto;
+
+    -- Actualizar el stock (actualizacion incluida en este procedimiento)
+    UPDATE Producto
+    SET stock = stock - v_cantidad
+    WHERE id_producto = v_id_producto;
+
+    SET i = i + 1;
+  END WHILE;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+
+\subsection{2. Registrar una resena}
+
+Este procedimiento inserta una resena para un producto. La validacion de que el cliente haya comprado el producto se realiza mediante un trigger (consulta la seccion Implementacion de indices y triggers en MySQL).
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE PROCEDURE RegistrarResena(
+  IN p_id_cliente INT,
+  IN p_id_producto INT,
+  IN p_calificacion INT,
+  IN p_comentario TEXT
+)
+BEGIN
+ 
+INSERT INTO Resena(calificacion, comentario, id_producto, id_cliente)
+VALUES (p_calificacion, p_comentario, p_id_producto, p_id_cliente);
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+
+\textbf{Nota:} El trigger utilizado para validar que el cliente haya comprado el producto se encuentra en la secci\'on \textbf{Implementaci\'on de \'indices y triggers en MySQL}, en la subsecci\'on \emph{``Trigger: validar rese\~nas solo de clientes que hayan comprado el producto''}.
+
+\subsection{3. Cambiar el estado de un pedido}
+
+Este procedimiento permite actualizar el estado de un pedido existente de forma segura.
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE PROCEDURE CambiarEstadoPedido(
+  IN p_id_pedido INT,
+  IN p_nuevo_estado ENUM('pendiente', 'enviado', 'entregado')
+)
+BEGIN
+  DECLARE pedido_existente INT;
+
+  -- Verificar que el pedido existe
+  SELECT COUNT(*) INTO pedido_existente
+  FROM Pedido
+  WHERE id_pedido = p_id_pedido;
+
+  IF pedido_existente = 0 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'El pedido no existe.';
+  END IF;
+
+  -- Actualizar el estado del pedido
+  UPDATE Pedido
+  SET estado = p_nuevo_estado
+  WHERE id_pedido = p_id_pedido;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+
+\textbf{Explicación general:}
+
+\begin{itemize}
+  \item En el procedimiento \textbf{RegistrarPedido} se verifica previamente que el cliente no exceda el límite de 5 pedidos pendientes y que cada producto cuente con stock suficiente. Se procesan los detalles del pedido enviados en formato JSON, y se actualiza el stock de cada producto al momento de generar el pedido.
+  \item En el procedimiento \textbf{RegistrarResena}, la validación que asegura que el cliente haya comprado el producto se delega al trigger implementado, eliminando así redundancias en la lógica.
+  \item En el procedimiento \textbf{CambiarEstadoPedido}, se valida la existencia del pedido antes de actualizar su estado, garantizando la integridad de la operación.
+\end{itemize}
+
+

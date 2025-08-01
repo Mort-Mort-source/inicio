@@ -1,7 +1,109 @@
-asasEl modelo ha sido diseñado cumpliendo con las tres primeras formas normales para asegurar consistencia, evitar redundancia y facilitar el mantenimiento de los datos:
+En esta sección se presentan los índices y triggers implementados para mejorar el rendimiento de consultas frecuentes y asegurar restricciones de negocio directamente en la base de datos.
 
-\begin{itemize}[label=--]
-    \item \textbf{Primera Forma Normal (1FN):} Todas las columnas contienen valores atómicos y no hay grupos repetitivos.
-    \item \textbf{Segunda Forma Normal (2FN):} No existen dependencias parciales; todos los atributos no clave dependen completamente de la clave primaria.
-    \item \textbf{Tercera Forma Normal (3FN):} No hay dependencias transitivas; cada atributo no clave depende solamente de la clave primaria.
+\subsection{Índices implementados}
+
+Se definieron los siguientes índices secundarios para optimizar el acceso a los datos mediante claves foráneas o combinaciones frecuentes de columnas.
+
+\begin{lstlisting}
+CREATE INDEX idx_producto_categoria ON Producto(id_categoria);
+CREATE INDEX idx_pedido_cliente ON Pedido(id_cliente);
+CREATE INDEX idx_detalle_pedido_producto ON DetallePedido(id_producto);
+CREATE INDEX idx_resena_cliente_producto ON Resena(id_cliente, id_producto);
+\end{lstlisting}
+
+\textbf{Explicación de cada índice:}
+
+\begin{itemize}
+  \item \texttt{idx\_producto\_categoria}  
+  Mejora las consultas que recuperan productos por categoría, como:  
+  \texttt{SELECT * FROM Producto WHERE id\_categoria = 3;}
+  
+  \item \texttt{idx\_pedido\_cliente}  
+  Optimiza las búsquedas de pedidos realizados por un cliente:  
+  \texttt{SELECT * FROM Pedido WHERE id\_cliente = 12;}
+  
+  \item \texttt{idx\_detalle\_pedido\_producto}  
+  Acelera la identificación de pedidos que incluyen un producto específico:  
+  \texttt{SELECT * FROM DetallePedido WHERE id\_producto = 5;}
+  
+  \item \texttt{idx\_resena\_cliente\_producto}  
+  Este índice compuesto facilita consultas como:  
+  \texttt{SELECT * FROM Reseña WHERE id\_cliente = 1 AND id\_producto = 10;}  
+  lo cual es útil para validar si un cliente ya reseñó un producto.
 \end{itemize}
+
+\subsection{Trigger: Límite de 5 pedidos pendientes por cliente}
+
+Para restringir la cantidad de pedidos pendientes a un máximo de cinco por cliente, se implementó el siguiente trigger:
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE TRIGGER trg_max_pedidos_pendientes
+BEFORE INSERT ON Pedido
+FOR EACH ROW
+BEGIN
+  DECLARE pedidos_pendientes INT;
+
+  SELECT COUNT(*) INTO pedidos_pendientes
+  FROM Pedido
+  WHERE id_cliente = NEW.id_cliente AND estado = 'pendiente';
+
+  IF pedidos_pendientes >= 5 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'El cliente ya tiene 5 pedidos pendientes.';
+  END IF;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+
+\textbf{Explicación:}
+
+\begin{itemize}
+  \item El trigger se ejecuta antes de insertar un nuevo pedido.
+  \item Cuenta los pedidos del cliente con estado \texttt{pendiente}.
+  \item Si el número es igual o mayor a 5, se lanza una excepción y se bloquea la inserción.
+  \item Esto garantiza que se cumpla la restricción incluso fuera del sistema de interfaz (por ejemplo, por scripts o inyecciones directas).
+\end{itemize}
+
+\subsection{Trigger: Validar reseñas solo de clientes que hayan comprado el producto}
+
+Este trigger impide que un cliente deje una reseña sobre un producto si no lo ha comprado previamente. Así se protege la integridad del sistema de calificaciones.
+
+\begin{lstlisting}
+DELIMITER //
+
+CREATE TRIGGER trg_resena_solo_si_compro
+BEFORE INSERT ON Resena
+FOR EACH ROW
+BEGIN
+  DECLARE total_compras INT;
+
+  SELECT COUNT(*) INTO total_compras
+  FROM Pedido P
+  JOIN DetallePedido D ON P.id_pedido = D.id_pedido
+  WHERE P.id_cliente = NEW.id_cliente
+    AND D.id_producto = NEW.id_producto;
+
+  IF total_compras = 0 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'El cliente no ha comprado este producto.';
+  END IF;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+
+\textbf{Explicación:}
+
+\begin{itemize}
+  \item El trigger se ejecuta antes de insertar una fila en la tabla \texttt{Reseña}.
+  \item Se hace una consulta a las tablas \texttt{Pedido} y \texttt{DetallePedido} para verificar si el cliente efectivamente compró el producto.
+  \item Si el resultado es cero, significa que el cliente no lo ha comprado.
+  \item En ese caso, el trigger lanza un error personalizado que bloquea la inserción de la reseña.
+\end{itemize}
+
+Este control asegura que las reseñas provienen exclusivamente de clientes reales, reforzando la autenticidad de la retroalimentación.
