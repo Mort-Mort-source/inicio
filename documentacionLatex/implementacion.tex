@@ -18,53 +18,151 @@
 
 
 
-\section{Implementación en SQL}
 
-\subsection{Creación de la base de datos y tablas}
 
-\begin{lstlisting}
-CREATE DATABASE EMPRESA;
-USE EMPRESA;
-\end{lstlisting}
+Este capitulo presenta la implementacion del modelo entidad-relacion en el sistema de gestion de bases de datos MySQL. Se creo una base de datos llamada \texttt{TiendaOnline} y a continuacion se describen las tablas que la conforman.
 
-\subsection{Tabla Empleados}
+\subsection{Tabla Categoria}
+
+La tabla \texttt{Categoria} organiza los productos en grupos tematicos como telefonos, laptops o accesorios. Contiene una clave primaria que la identifica de forma unica.
 
 \begin{lstlisting}
-CREATE TABLE Empleados (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
-    fecha_de_ingreso DATE,
-    salario DECIMAL(10,2),
-    categoria VARCHAR(100)
+CREATE TABLE Categoria (
+  id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  descripcion TEXT
 );
 \end{lstlisting}
 
-\textbf{Descripción de campos:}
+\textbf{Descripcion de campos:}
+
 \begin{itemize}
-    \item \texttt{id}: Identificador único del empleado (clave primaria)
-    \item \texttt{nombre}: Nombre completo del empleado
-    \item \texttt{fecha\_de\_ingreso}: Fecha de contratación
-    \item \texttt{salario}: Remuneración del empleado
-    \item \texttt{categoria}: Categoría o puesto del empleado
+  \item \texttt{id\_categoria}: Identificador unico de la categoria.
+  \item \texttt{nombre}: Nombre de la categoria (por ejemplo, "Laptops").
+  \item \texttt{descripcion}: Descripcion opcional de la categoria.
 \end{itemize}
 
-\subsection{Tabla Tabulador}
+\subsection{Tabla Producto}
+
+Almacena los productos disponibles en la tienda. Cada producto pertenece a una categoria.
 
 \begin{lstlisting}
-CREATE TABLE Tabulador (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_puesto VARCHAR(100),
-    sueldo DECIMAL(10,2),
-    dias_antiguedad INT
+CREATE TABLE Producto (
+  id_producto INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  descripcion TEXT,
+  precio DECIMAL(10,2) NOT NULL,
+  stock INT NOT NULL CHECK (stock >= 0),
+  id_categoria INT,
+  FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
 );
 \end{lstlisting}
 
-\textbf{Descripción de campos:}
+\textbf{Descripcion de campos:}
+
 \begin{itemize}
-    \item \texttt{id}: Identificador único del registro (clave primaria)
-    \item \texttt{nombre\_puesto}: Nombre del puesto o categoría
-    \item \texttt{sueldo}: Salario base para el puesto
-    \item \texttt{dias\_antiguedad}: Días requeridos para antigüedad en el puesto
+  \item \texttt{id\_producto}: Identificador del producto.
+  \item \texttt{nombre}, \texttt{descripcion}, \texttt{precio}: Informacion basica.
+  \item \texttt{stock}: Inventario disponible, no puede ser negativo.
+  \item \texttt{id\_categoria}: Clave foranea que enlaza con la tabla \texttt{Categoria}.
+\end{itemize}
+
+\subsection{Tabla Cliente}
+
+Contiene la informacion personal de cada cliente. El correo electronico debe ser unico.
+
+\begin{lstlisting}
+CREATE TABLE Cliente (
+  id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  correo VARCHAR(100) NOT NULL UNIQUE,
+  direccion TEXT,
+  telefono VARCHAR(20)
+);
+\end{lstlisting}
+
+\textbf{Descripcion de campos:}
+
+\begin{itemize}
+  \item \texttt{id\_cliente}: Identificador del cliente.
+  \item \texttt{correo}: Sirve como clave candidata por ser unico.
+  \item \texttt{direccion}, \texttt{telefono}: Informacion de contacto.
+\end{itemize}
+
+\subsection{Tabla Pedido}
+
+Almacena las ordenes hechas por los clientes, incluyendo la fecha y el estado del pedido.
+
+\begin{lstlisting}
+CREATE TABLE Pedido (
+  id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+  fecha DATE NOT NULL,
+  estado ENUM('pendiente', 'enviado', 'entregado') NOT NULL,
+  id_cliente INT,
+  FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+\end{lstlisting}
+
+\textbf{Descripcion de campos:}
+
+\begin{itemize}
+  \item \texttt{id\_pedido}: Clave primaria del pedido.
+  \item \texttt{fecha}: Fecha en que se realizo.
+  \item \texttt{estado}: Estado actual del pedido (controlado por ENUM).
+  \item \texttt{id\_cliente}: Clave foranea hacia el cliente que realizo el pedido.
+\end{itemize}
+
+\subsection{Tabla DetallePedido}
+
+Esta tabla representa una relacion \texttt{muchos a muchos} entre \texttt{Pedido} y \texttt{Producto}. Registra los productos incluidos en cada pedido, sus cantidades y precios al momento de la compra.
+
+\begin{lstlisting}
+CREATE TABLE DetallePedido (
+  id_detalle INT AUTO_INCREMENT PRIMARY KEY,
+  id_pedido INT,
+  id_producto INT,
+  cantidad INT NOT NULL,
+  precio_unitario DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
+  FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+);
+\end{lstlisting}
+
+\textbf{Descripcion detallada:}
+
+\begin{itemize}
+  \item \texttt{id\_detalle}: Identificador unico de cada linea del pedido.
+  \item \texttt{id\_pedido}: Clave foranea hacia el pedido correspondiente.
+  \item \texttt{id\_producto}: Clave foranea hacia el producto que se esta comprando.
+  \item \texttt{cantidad}: Numero de unidades del producto en ese pedido.
+  \item \texttt{precio\_unitario}: Precio del producto en el momento del pedido (puede variar del precio actual).
+\end{itemize}
+
+Esta tabla es esencial para conservar un historico detallado de cada compra, permitiendo consultas como "¿que productos se compraron en el pedido 123?" o "¿cuantas unidades de producto A se vendieron en total?".
+
+\subsection{Tabla Resena}
+
+Permite registrar las calificaciones y comentarios hechos por los clientes sobre los productos comprados.
+
+\begin{lstlisting}
+CREATE TABLE Resena (
+  id_resena INT AUTO_INCREMENT PRIMARY KEY,
+  calificacion INT CHECK (calificacion BETWEEN 1 AND 5),
+  comentario TEXT,
+  id_producto INT,
+  id_cliente INT,
+  FOREIGN KEY (id_producto) REFERENCES Producto(id_producto),
+  FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+\end{lstlisting}
+
+\textbf{Descripcion de campos:}
+
+\begin{itemize}
+  \item \texttt{id\_resena}: Identificador de la resena.
+  \item \texttt{calificacion}: Numero entero entre 1 y 5.
+  \item \texttt{comentario}: Texto libre.
+  \item \texttt{id\_producto}, \texttt{id\_cliente}: Claves foraneas para validar que el cliente resena un producto especifico.
 \end{itemize}
 
 \end{document}

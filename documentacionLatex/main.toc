@@ -4,8 +4,10 @@
 \contentsline {section}{\numberline {2}Diagrama ER y justificación de la normalización}{2}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Diagrama Entidad-Relación}{2}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Justificación de la normalización}{3}{subsection.2.2}%
-\contentsline {section}{\numberline {3}Implementación en MySQL}{4}{section.3}%
-\contentsline {section}{\numberline {4}Implementación en SQL}{4}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Creación de la base de datos y tablas}{4}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Tabla Empleados}{4}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Tabla Tabulador}{4}{subsection.4.3}%
+\contentsline {section}{\numberline {3}Implementación de tablas en MySQL}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Tabla Categoria}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Tabla Producto}{4}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Tabla Cliente}{5}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Tabla Pedido}{5}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Tabla DetallePedido}{6}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Tabla Resena}{6}{subsection.3.6}%
