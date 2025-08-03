@@ -179,6 +179,7 @@ INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi6.tfm
 INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy10.tfm
 INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy8.tfm
 INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy6.tfm
+INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ectt1200.tfm
 OUTPUT main.toc
 INPUT .\descripcionProyecto.tex
 INPUT .\descripcionProyecto.tex
@@ -209,7 +210,6 @@ INPUT .\implementacion.tex
 INPUT .\implementacion.tex
 INPUT .\implementacion.tex
 INPUT implementacion.tex
-INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ectt1200.tfm
 INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ectt1000.tfm
 INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ecrm1000.tfm
 INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ecrm0600.tfm
@@ -229,6 +229,16 @@ INPUT .\procedimientosAlmacenados.tex
 INPUT .\procedimientosAlmacenados.tex
 INPUT procedimientosAlmacenados.tex
 INPUT C:\Users\Aaron\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ecit1000.tfm
+INPUT .\procedimientosAlmacenados2.tex
+INPUT .\procedimientosAlmacenados2.tex
+INPUT .\procedimientosAlmacenados2.tex
+INPUT .\procedimientosAlmacenados2.tex
+INPUT procedimientosAlmacenados2.tex
+INPUT .\ejemplosDeUsoIndices.tex
+INPUT .\ejemplosDeUsoIndices.tex
+INPUT .\ejemplosDeUsoIndices.tex
+INPUT .\ejemplosDeUsoIndices.tex
+INPUT ejemplosDeUsoIndices.tex
 INPUT main.aux
 INPUT .\main.out
 INPUT .\main.out
@@ -238,12 +248,12 @@ INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ect
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1000.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0600.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0600.pk
-INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1200.pk
-INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1200.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecti1200.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecti1200.pk
+INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1200.pk
+INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1200.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk
 INPUT C:\Users\Aaron\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk

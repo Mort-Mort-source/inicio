@@ -1,0 +1,104 @@
+
+
+Esta sección presenta una segunda tanda de procedimientos almacenados que permiten realizar operaciones comunes en la tienda en línea, desde mantenimiento de productos hasta reportes y validaciones adicionales.
+
+\subsection{Eliminar reseñas de un producto y actualizar promedio}
+\begin{lstlisting}[language=SQL]
+DELIMITER //
+
+CREATE PROCEDURE EliminarResenasYActualizarPromedio(
+  IN p_id_producto INT
+)
+BEGIN
+  DELETE FROM Resena
+  WHERE id_producto = p_id_producto;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+\textbf{Explicaci\'on:} Este procedimiento elimina todas las resenas asociadas a un producto y, si se lleva el promedio en una columna, se puede actualizar a NULL para indicar que ya no tiene calificaciones.
+
+\subsection{Agregar producto evitando duplicados por nombre y categor\'ia}
+\begin{lstlisting}[language=SQL]
+DELIMITER //
+
+CREATE PROCEDURE AgregarProductoSinDuplicado(
+  IN p_nombre VARCHAR(100),
+  IN p_descripcion TEXT,
+  IN p_precio DECIMAL(10,2),
+  IN p_stock INT,
+  IN p_id_categoria INT
+)
+BEGIN
+  DECLARE existe INT;
+
+  SELECT COUNT(*) INTO existe
+  FROM Producto
+  WHERE nombre = p_nombre AND id_categoria = p_id_categoria;
+
+  IF existe > 0 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Ya existe un producto con ese nombre en esta categor\u00eda.';
+  ELSE
+    INSERT INTO Producto(nombre, descripcion, precio, stock, id_categoria)
+    VALUES (p_nombre, p_descripcion, p_precio, p_stock, p_id_categoria);
+  END IF;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+\textbf{Explicaci\'on:} Asegura que no se repitan productos con el mismo nombre dentro de una misma categor\'ia, arrojando un error si ya existe.
+
+\subsection{Actualizar direccion y telefono de un cliente}
+\begin{lstlisting}[language=SQL]
+DELIMITER //
+
+CREATE PROCEDURE ActualizarDatosCliente(
+  IN p_id_cliente INT,
+  IN p_nueva_direccion TEXT,
+  IN p_nuevo_telefono VARCHAR(20)
+)
+BEGIN
+  DECLARE existe INT;
+
+  SELECT COUNT(*) INTO existe
+  FROM Cliente
+  WHERE id_cliente = p_id_cliente;
+
+  IF existe = 0 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'El cliente no existe.';
+  ELSE
+    UPDATE Cliente
+    SET direccion = p_nueva_direccion,
+        telefono = p_nuevo_telefono
+    WHERE id_cliente = p_id_cliente;
+  END IF;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+\textbf{Explicaci\'on:} Permite modificar de forma segura los datos de contacto de un cliente, asegurando que el cliente exista antes de aplicar los cambios.
+
+\subsection{Reporte de productos con bajo stock}
+\begin{lstlisting}[language=SQL]
+DELIMITER //
+
+CREATE PROCEDURE ReporteStockBajo()
+BEGIN
+  SELECT id_producto, nombre, stock
+  FROM Producto
+  WHERE stock < 5
+  ORDER BY stock ASC;
+END;
+//
+
+DELIMITER ;
+\end{lstlisting}
+\textbf{Explicaci\'on:} Devuelve un listado de productos con stock inferior a 5 unidades, ordenado de menor a mayor.
+
+\bigskip
+Estos procedimientos mejoran la robustez del sistema al controlar integridad de datos, simplificar operaciones y facilitar consultas comunes para mantenimiento y gesti\'on.

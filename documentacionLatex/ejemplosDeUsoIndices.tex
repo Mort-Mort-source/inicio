@@ -1,0 +1,62 @@
+
+
+Para mejorar el rendimiento de las consultas en la base de datos, se definieron varios índices sobre columnas que participan frecuentemente en búsquedas, relaciones o agrupamientos. A continuación, se detallan los índices creados, los stored procedures donde se utilizan y la parte del código donde actúan.
+
+\subsection{Índice \texttt{idx\_producto\_categoria}}
+\begin{lstlisting}
+CREATE INDEX idx_producto_categoria ON Producto(id_categoria);
+\end{lstlisting}
+
+Este índice se usa en el stored procedure \texttt{ProductosPorCategoria} (sección de consultas almacenadas) para acelerar la cláusula \texttt{WHERE id\_categoria = p\_categoria}. Parte del código:
+\begin{lstlisting}
+WHERE p.id_categoria = c.id_categoria
+  AND p.stock > 0
+\end{lstlisting}
+
+\subsection{Índice \texttt{idx\_pedido\_cliente}}
+\begin{lstlisting}
+CREATE INDEX idx_pedido_cliente ON Pedido(id_cliente);
+\end{lstlisting}
+
+Este índice mejora la performance en el procedimiento \texttt{RegistrarPedido} (sección de procedimientos operativos) cuando verifica el número de pedidos pendientes:
+\begin{lstlisting}
+SELECT COUNT(*) INTO pedidos_pend
+FROM Pedido
+WHERE id_cliente = p_id_cliente
+  AND estado = 'pendiente';
+\end{lstlisting}
+
+\subsection{Índice \texttt{idx\_detalle\_pedido\_producto}}
+\begin{lstlisting}
+CREATE INDEX idx_detalle_pedido_producto ON DetallePedido(id_producto);
+\end{lstlisting}
+
+Este índice acelera la inserción de detalles en \texttt{RegistrarPedido}, concretamente en la validación de stock y la inserción en \texttt{DetallePedido}:
+\begin{lstlisting}
+SELECT stock INTO stock_actual
+FROM Producto
+WHERE id_producto = v_id_producto;
+\end{lstlisting}
+
+\subsection{Índice \texttt{idx\_resena\_cliente\_producto}}
+\begin{lstlisting}
+CREATE INDEX idx_resena_cliente_producto ON Resena(id_cliente, id_producto);
+\end{lstlisting}
+
+Se utiliza en el trigger \texttt{trg\_resena\_solo\_si\_compro} (sección \ref{trigger:validarResenas}) para validar rápidamente que el cliente compró el producto:
+\begin{lstlisting}
+SELECT COUNT(*) INTO total_compras
+FROM Pedido P
+JOIN DetallePedido D ON P.id_pedido = D.id_pedido
+WHERE P.id_cliente = NEW.id_cliente
+  AND D.id_producto = NEW.id_producto;
+\end{lstlisting}
+
+\subsection{Resumen}
+
+Los índices descritos se integran en los stored procedures y triggers principales para:
+\begin{itemize}
+  \item Reducir tiempos de respuesta en consultas de productos por categoría.
+  \item Acelerar validaciones en \texttt{RegistrarPedido} y \texttt{trg\_resena\_solo\_si\_compro}.
+  \item Mejorar la eficiencia en operaciones críticas de negocio.
+\end{itemize}
