@@ -7,10 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bases_tienda.BlDto.ProductoDto;
 import com.bases_tienda.DalEntities.Cliente;
 import com.bases_tienda.DalEntities.Producto;
 
-public class ProcedimientosDaoImpl implements ProcedimientosDao {
+public class ProcedimientosDaoImpl implements ProcedimientosDao, mx.uam.proyecto.dal.ProcedimientosDao {
 
     private final Connection connection;
 
@@ -200,6 +201,38 @@ public List<Producto> obtenerTop5ProductosMejorCalificados() {
     }
     return productos;
 }
+
+
+
+
+@Override
+public List<ProductoDto> getAllProductos() {
+    List<ProductoDto> productosDto = new ArrayList<>();
+    String sql = "{CALL Get_all_productos()}";
+    try (CallableStatement stmt = connection.prepareCall(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next()) {
+            ProductoDto p = new ProductoDto(
+                rs.getInt("id_producto"),
+                rs.getString("nombre"),
+                rs.getString("descripcion"),
+                rs.getDouble("precio"),
+                rs.getInt("stock")
+            );
+            productosDto.add(p);
+        }
+        return productosDto;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return productosDto;
+    }
+}
+
+
+
+
+
+
 }
 
 

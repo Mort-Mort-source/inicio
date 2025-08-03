@@ -14,15 +14,15 @@ public class GestorCliente {
     private ProcedimientosDao dao;
 
     public GestorCliente() {
-        dao = new ProcedimientosDaoImpl();
+     dao = new ProcedimientosDaoImpl();
     }
 
     public List<ClienteDto> obtenerClientesConPedidosPendientes() {
-        // El DAO devuelve entidades, se convierten a DTOs
+      
         List<ClienteDto> clientesDto = new java.util.ArrayList<>();
         dao.obtenerClientesConPedidosPendientes().forEach(c -> 
             clientesDto.add(new ClienteDto(
-                c.getIdCliente(),
+                c.getId(),
                 c.getNombre(),
                 c.getCorreo()
             ))
@@ -34,6 +34,6 @@ public class GestorCliente {
         return dao.actualizarDireccionYTelefonoCliente(idCliente, nuevaDireccion, nuevoTelefono);
     }
     
-    // Puedes agregar más métodos específicos de negocio aquí
+    
     
 }

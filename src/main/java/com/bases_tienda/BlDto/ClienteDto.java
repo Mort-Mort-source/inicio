@@ -3,7 +3,7 @@ package com.bases_tienda.BlDto;
 
 
 public class ClienteDto {
-    private int idCliente;
+    private int id;
     private String nombre;
     private String correo;
     private String direccion;
@@ -11,20 +11,27 @@ public class ClienteDto {
 
     public ClienteDto(int id) {}
 
-    public ClienteDto(int idCliente, String nombre, String correo, String direccion, String telefono) {
-        this.idCliente = idCliente;
+    public ClienteDto(int id, String nombre, String correo, String direccion, String telefono) {
+        this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.direccion = direccion;
         this.telefono = telefono;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public ClienteDto(int id, String nombre, String correo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {

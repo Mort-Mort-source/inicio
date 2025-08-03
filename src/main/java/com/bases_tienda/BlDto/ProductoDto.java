@@ -23,6 +23,29 @@ public class ProductoDto {
         this.idCategoria = idCategoria;
     }
 
+    public ProductoDto(int id, String nombre, String descripcion, double precio, int stock) {
+        this.idProducto = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.stock = stock;
+    }
+
+    public ProductoDto(int id, String nombre, String descripcion, double precio, int stock,
+            double promedioCalificacion, int totalResenas) {
+        this.idProducto = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.stock = stock;
+        this.promedioCalificacion = promedioCalificacion;
+        this.totalResenas = totalResenas;
+       
+    }
+
+    
+
+
     public int getIdProducto() {
         return idProducto;
     }

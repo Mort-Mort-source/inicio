@@ -1,19 +1,17 @@
 package com.bases_tienda.Dal;
 
-
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-/**
- * Clase de conexión a la base de datos MySQL usando properties externos.
- */
 public class DbConnection {
-    private String url;
+
+    private String database;
+    private String host;
+    private String port;
+    private String scheme;
     private String user;
     private String password;
 
@@ -23,61 +21,54 @@ public class DbConnection {
         loadProperties();
     }
 
-    /**
-     * Carga configuración de db.properties en el classpath.
-     */
     private void loadProperties() {
-        Properties props = new Properties();
-        try (InputStream in = getClass().getClassLoader().getResourceAsStream("db.properties")) {
-            if (in == null) {
-                throw new IOException("No se encontró el archivo db.properties en classpath");
+        Properties properties = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+            if (input == null) {
+                System.out.println("Sorry, unable to find db.properties");
+                return;
             }
-            props.load(in);
-            String host = props.getProperty("db.host");
-            String port = props.getProperty("db.port");
-            String schema = props.getProperty("db.schema");
-            this.user = props.getProperty("db.user");
-            this.password = props.getProperty("db.password");
-            this.url = String.format("jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=UTC",
-                    host, port, schema);
-        } catch (IOException e) {
-            throw new RuntimeException("Error al cargar configuración de base de datos", e);
+            properties.load(input);
+            database = properties.getProperty("database");
+            host = properties.getProperty("host");
+            port = properties.getProperty("port");
+            scheme = properties.getProperty("scheme");
+            user = properties.getProperty("user");
+            password = properties.getProperty("password");
+        } catch (Exception e) {
+            System.err.println("IOException: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    /**
-     * Abre la conexión si no está abierta.
-     */
+     private String getStringConnection(){
+        StringBuilder str = new StringBuilder();
+        str.append(database);
+        str.append(host);
+        str.append(":");
+        str.append(port);
+        str.append("/");
+        str.append(scheme);
+        return str.toString();
+    }
+
     public void connect() {
         try {
-            if (this.connection == null || this.connection.isClosed()) {
-                this.connection = DriverManager.getConnection(url, user, password);
-            }
+            String stringConnection = getStringConnection();
+            this.connection = DriverManager.getConnection(stringConnection, user, password);
         } catch (SQLException e) {
-            throw new RuntimeException("No se pudo conectar a la base de datos", e);
+            System.err.println("SQLException: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    /**
-     * Devuelve la conexión activa.
-     */
     public Connection getConnection() {
-        connect();
         return this.connection;
     }
 
-    /**
-     * Cierra la conexión si está abierta.
-     */
-    public void disconnect() {
+    public void disconnect() throws SQLException {
         if (this.connection != null) {
-            try {
-                if (!this.connection.isClosed()) {
-                    this.connection.close();
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException("Error al cerrar la conexión", e);
-            }
+            this.connection.close();
         }
     }
 }

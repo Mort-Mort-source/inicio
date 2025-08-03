@@ -2,6 +2,7 @@ package mx.uam.proyecto.dal;
 
 import java.util.List;
 
+import com.bases_tienda.BlDto.ProductoDto;
 import com.bases_tienda.DalEntities.Cliente;
 import com.bases_tienda.DalEntities.Producto;
 
@@ -38,4 +39,6 @@ public interface ProcedimientosDao {
 
     // 10. Top 5 productos con mejor calificación promedio
     List<Producto> obtenerTop5ProductosMejorCalificados();
+
+    Iterable<ProductoDto> getAllProductos();
 }
