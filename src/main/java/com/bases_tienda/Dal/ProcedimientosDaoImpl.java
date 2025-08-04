@@ -114,7 +114,7 @@ public List<Producto> obtenerProductosConBajoStock(int umbral) {
          ResultSet rs = stmt.executeQuery()) {
         while (rs.next()) {
             Producto p = new Producto();
-            p.setId(rs.getInt("id_producto"));
+            p.setIdProducto(rs.getInt("id_producto"));
             p.setNombre(rs.getString("nombre"));
             p.setStock(rs.getInt("stock"));
             productos.add(p);
@@ -213,18 +213,17 @@ public List<ProductoDto> getAllProductos() {
     }
 }
 
-    @Override
-    public boolean agregarProductoSinDuplicados(String nombre, int categoriaId, double precio, int stock, String descripcion) {
-         String nombre, 
-    int categoriaId, 
-    double precio, 
-    int stock,
-    String descripcion  // Nuevo parámetro
-) {
+
+
+
+  
+
+@Override
+public boolean agregarProductoSinDuplicados(String nombre, String descripcion, int categoriaId, double precio, int stock) {
     String sql = "{CALL AgregarProductoSinDuplicado(?, ?, ?, ?, ?)}";
     try (CallableStatement stmt = connection.prepareCall(sql)) {
         stmt.setString(1, nombre);
-        stmt.setString(2, descripcion);  // Usar el nuevo parámetro
+        stmt.setString(2, descripcion);
         stmt.setDouble(3, precio);
         stmt.setInt(4, stock);
         stmt.setInt(5, categoriaId);
@@ -235,11 +234,6 @@ public List<ProductoDto> getAllProductos() {
         return false;
     }
 }
-
-  
-
-    
-
 
 
 

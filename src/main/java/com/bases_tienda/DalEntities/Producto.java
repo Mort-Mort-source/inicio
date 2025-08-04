@@ -21,8 +21,8 @@ public Producto() {}
 
 
 
-public Producto(int id, String nombre, String descripcion, double precio, int stock, double promedioCalificacion, int totalResenas, int idCategoria) {
-    this.id = id;
+public Producto(int idProducto, String nombre, String descripcion, double precio, int stock, double promedioCalificacion, int totalResenas, int idCategoria) {
+    this.id = idProducto;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.precio = precio;
@@ -32,12 +32,12 @@ public Producto(int id, String nombre, String descripcion, double precio, int st
     this.idCategoria = idCategoria;
 }
 
-public int getId() {
+public int getIdProducto() {
     return id;
 }
 
-public void setId(int id) {
-    this.id = id;
+public void setIdProducto(int idProducto) {
+    this.id = idProducto;
 }
 
 public String getNombre() {

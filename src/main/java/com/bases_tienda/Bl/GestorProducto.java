@@ -3,13 +3,14 @@ package com.bases_tienda.Bl;
 
 
 import java.util.List;
-import com.bases_tienda.BlDto.ProductoDto;
-import com.bases_tienda.Dal.ProcedimientosDaoImpl;
 
-import mx.uam.proyecto.dal.ProcedimientosDao;
+import com.bases_tienda.BlDto.ProductoDto;
+import com.bases_tienda.Dal.ProcedimientosDao;
+import com.bases_tienda.Dal.ProcedimientosDaoImpl;
 
 public class GestorProducto {
 
+    @SuppressWarnings("FieldMayBeFinal")
     private ProcedimientosDao dao;
 
     public GestorProducto() {
@@ -20,7 +21,7 @@ public class GestorProducto {
         List<ProductoDto> productosDto = new java.util.ArrayList<>();
         dao.obtenerProductosPorCategoria(idCategoria).forEach(p -> 
             productosDto.add(new ProductoDto(
-                p.getId(),
+                p.getIdProducto(),
                 p.getNombre(),
                 p.getDescripcion(),
                 p.getPrecio(),
@@ -34,7 +35,7 @@ public class GestorProducto {
         List<ProductoDto> productosDto = new java.util.ArrayList<>();
         dao.obtenerProductosConBajoStock(umbral).forEach(p -> 
             productosDto.add(new ProductoDto(
-                p.getId(),
+                p.getIdProducto(),
                 p.getNombre(),
                 p.getDescripcion(),
                 p.getPrecio(),
@@ -48,7 +49,7 @@ public class GestorProducto {
         List<ProductoDto> productosDto = new java.util.ArrayList<>();
         dao.obtenerTop5ProductosMejorCalificados().forEach(p -> 
             productosDto.add(new ProductoDto(
-                p.getId(),
+                p.getIdProducto(),
                 p.getNombre(),
                 p.getDescripcion(),
                 p.getPrecio(),
@@ -60,9 +61,9 @@ public class GestorProducto {
         return productosDto;
     }
 
-    public boolean agregarProductoSinDuplicados(String nombre, int idCategoria, double precio, int stock, String descripcion) {
-        return dao.agregarProductoSinDuplicados(nombre, idCategoria, precio, stock); 
-    }
+public boolean agregarProductoSinDuplicados(String nombre, int idCategoria, double precio, int stock, String descripcion) {
+    return dao.agregarProductoSinDuplicados(nombre, descripcion, idCategoria, precio, stock); 
+}
 
     public List<ProductoDto> getAllProductos() {
         List<ProductoDto> productosDto = new java.util.ArrayList<>();

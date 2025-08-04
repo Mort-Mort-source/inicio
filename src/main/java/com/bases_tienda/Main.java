@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 import com.bases_tienda.Pl.GestionProductosPanel;
 
 public class Main {
-    public static void main(String[] args) {
+  /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Gestión de Productos");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -18,5 +18,5 @@ public class Main {
 
             frame.setVisible(true);
         });
-    }
+    } */ 
 }

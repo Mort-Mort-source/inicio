@@ -1,7 +1,5 @@
 package com.bases_tienda.Bl;
 
-
-
 import java.util.List;
 
 import com.bases_tienda.BlDto.ClienteDto;

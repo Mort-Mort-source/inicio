@@ -1,7 +1,5 @@
 package com.bases_tienda.BlDto;
 
-
-
 public class ProductoDto {
     private int idProducto;
     private String nombre;
@@ -9,8 +7,8 @@ public class ProductoDto {
     private double precio;
     private int stock;
     private int idCategoria;
-    private double promedioCalificacion;
-    private int totalResenas;
+    private Double promedioCalificacion;  // Cambiado de double a Double
+    private Integer totalResenas;         // Cambiado de int a Integer
 
     public ProductoDto() {}
 
@@ -32,7 +30,7 @@ public class ProductoDto {
     }
 
     public ProductoDto(int id, String nombre, String descripcion, double precio, int stock,
-            double promedioCalificacion, int totalResenas) {
+            Double promedioCalificacion, Integer totalResenas) {
         this.idProducto = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -40,11 +38,7 @@ public class ProductoDto {
         this.stock = stock;
         this.promedioCalificacion = promedioCalificacion;
         this.totalResenas = totalResenas;
-       
     }
-
-    
-
 
     public int getIdProducto() {
         return idProducto;
@@ -94,20 +88,19 @@ public class ProductoDto {
         this.idCategoria = idCategoria;
     }
 
-    public double getPromedioCalificacion() {
+    public Double getPromedioCalificacion() {
         return promedioCalificacion;
     }
 
-    public void setPromedioCalificacion(double promedioCalificacion) {
+    public void setPromedioCalificacion(Double promedioCalificacion) {
         this.promedioCalificacion = promedioCalificacion;
     }
 
-    public int getTotalResenas() {
+    public Integer getTotalResenas() {
         return totalResenas;
     }
 
-    public void setTotalResenas(int totalResenas) {
+    public void setTotalResenas(Integer totalResenas) {
         this.totalResenas = totalResenas;
     }
 }
-

@@ -4,6 +4,7 @@ package com.bases_tienda.Dal;
 
 import java.util.List;
 
+import com.bases_tienda.BlDto.ProductoDto;
 import com.bases_tienda.DalEntities.Cliente;
 import com.bases_tienda.DalEntities.Producto;
 
@@ -22,7 +23,8 @@ public interface ProcedimientosDao {
     boolean eliminarResenasYActualizarPromedio(int idProducto);
 
     // 5. Agregar producto evitando duplicados por nombre y categoría
-    boolean agregarProductoSinDuplicados(String nombre, int categoriaId, double precio, int stock, String descripcion);
+    boolean agregarProductoSinDuplicados(String nombre, String descripcion, int categoriaId, double precio, int stock);
+
 
     // 6. Actualizar dirección y teléfono de un cliente
     boolean actualizarDireccionYTelefonoCliente(int idCliente, String nuevaDireccion, String nuevoTelefono);
@@ -42,6 +44,6 @@ public interface ProcedimientosDao {
     List<Producto> obtenerTop5ProductosMejorCalificados();
 
     // 11.obtener productos todos los productos
-    List<Producto> getAllProductos();
+    List<ProductoDto> getAllProductos();
     
 }
