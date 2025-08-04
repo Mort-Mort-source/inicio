@@ -96,4 +96,16 @@ DELIMITER;
   \item Se ordena el resultado en orden descendente por calificación y se limita a los primeros cinco.
 \end{itemize}
 
+\subsection{Busqueda de todos los productos}
+Este procedimiento permite buscar todos los productos disponibles en la tienda, mostrando su nombre, descripción, precio y stock. Esta consulta se agrego por necesidad al 
+implementar la base de datos en un sistema de 3 capas, permitiendo que el cliente pueda ver todos los productos disponibles.
+\begin{lstlisting}
+  DELIMITER //
+CREATE PROCEDURE Get_all_categorias()
+BEGIN
+    SELECT id_categoria, nombre FROM categoria;
+END //
+DELIMITER ;
+\end{lstlisting}
+
 \newpage

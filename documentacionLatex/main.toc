@@ -19,18 +19,19 @@
 \contentsline {subsection}{\numberline {5.1}Productos disponibles por categoría, ordenados por precio}{10}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Clientes con pedidos pendientes y total de compras}{11}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Top 5 productos con mejor calificación promedio}{12}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Procedimientos almacenados en MySQL}{13}{section.6}%
-\contentsline {subsection}{\numberline {6.1}1. Registrar un nuevo pedido}{13}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}2. Registrar una resena}{14}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}3. Cambiar el estado de un pedido}{15}{subsection.6.3}%
-\contentsline {section}{\numberline {7}Procedimientos almacenados (Parte II)}{16}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Eliminar reseñas de un producto y actualizar promedio}{16}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Agregar producto evitando duplicados por nombre y categor\'ia}{17}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Actualizar direccion y telefono de un cliente}{17}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}Reporte de productos con bajo stock}{18}{subsection.7.4}%
-\contentsline {section}{\numberline {8}Ejemplos de uso de índices}{18}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Índice \texttt {idx\_producto\_categoria}}{19}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Índice \texttt {idx\_pedido\_cliente}}{19}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Índice \texttt {idx\_detalle\_pedido\_producto}}{19}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Índice \texttt {idx\_resena\_cliente\_producto}}{19}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Resumen}{20}{subsection.8.5}%
+\contentsline {subsection}{\numberline {5.4}Busqueda de todos los productos}{12}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Procedimientos almacenados en MySQL}{14}{section.6}%
+\contentsline {subsection}{\numberline {6.1}1. Registrar un nuevo pedido}{14}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}2. Registrar una resena}{15}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}3. Cambiar el estado de un pedido}{16}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Procedimientos almacenados (Parte II)}{17}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Eliminar reseñas de un producto y actualizar promedio}{17}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Agregar producto evitando duplicados por nombre y categor\'ia}{18}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Actualizar direccion y telefono de un cliente}{18}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Reporte de productos con bajo stock}{19}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Ejemplos de uso de índices}{19}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Índice \texttt {idx\_producto\_categoria}}{20}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Índice \texttt {idx\_pedido\_cliente}}{20}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Índice \texttt {idx\_detalle\_pedido\_producto}}{20}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Índice \texttt {idx\_resena\_cliente\_producto}}{20}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Resumen}{21}{subsection.8.5}%

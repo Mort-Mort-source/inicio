@@ -159,6 +159,8 @@ public List<Cliente> obtenerClientesConPedidosPendientes() {
             c.setId(rs.getInt("id_cliente"));
             c.setNombre(rs.getString("nombre"));
             c.setCorreo(rs.getString("correo"));
+            c.setTelefono(rs.getString("telefono"));
+            c.setDireccion(rs.getString("direccion"));
             clientes.add(c);
         }
     } catch (SQLException e) {

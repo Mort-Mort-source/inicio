@@ -24,7 +24,9 @@ public class GestorCliente {
             clientesDto.add(new ClienteDto(
                 c.getId(),
                 c.getNombre(),
-                c.getCorreo()
+                c.getCorreo(),
+                c.getTelefono(),
+                c.getDireccion()
             ))
         );
         return clientesDto;

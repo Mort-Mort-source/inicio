@@ -36,6 +36,8 @@ public class GestionClientesPanel extends JPanel {
         modeloTabla.addColumn("ID");
         modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Correo");
+        modeloTabla.addColumn("Teléfono");
+        modeloTabla.addColumn("Dirección");
 
         tablaClientes = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tablaClientes);
@@ -57,7 +59,9 @@ public class GestionClientesPanel extends JPanel {
             modeloTabla.addRow(new Object[]{
                 c.getId(),
                 c.getNombre(),
-                c.getCorreo()
+                c.getCorreo(),
+                c.getTelefono(),
+                c.getDireccion()
             });
         }
     }
