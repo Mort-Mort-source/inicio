@@ -45,6 +45,9 @@ public interface ProcedimientosDao {
 
     // 11.obtener productos todos los productos
     List<ProductoDto> getAllProductos();
+
+    // 12. obtener todos los clientes
+    List<Cliente> getAllClientes();
     
     
 }

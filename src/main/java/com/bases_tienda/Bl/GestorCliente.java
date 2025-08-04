@@ -16,6 +16,19 @@ public class GestorCliente {
     public GestorCliente() {
      dao = new ProcedimientosDaoImpl();
     }
+    public List<ClienteDto> getAllClientes() {
+        List<ClienteDto> clientesDto = new java.util.ArrayList<>();
+        dao.getAllClientes().forEach(c -> 
+            clientesDto.add(new ClienteDto(
+                c.getId(),
+                c.getNombre(),
+                c.getCorreo(),
+                c.getTelefono(),
+                c.getDireccion()
+            ))
+        );
+        return clientesDto;
+    }
 
     public List<ClienteDto> obtenerClientesConPedidosPendientes() {
       

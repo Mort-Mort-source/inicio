@@ -43,21 +43,39 @@ public class GestionClientesPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(tablaClientes);
          // Panel de botones
         JButton btnActualizarDireccion = new JButton("Actualizar Dirección y Teléfono");
-        JButton btnActualizar = new JButton("Actualizar");
+        JButton btnMostrarClientesPendientes = new JButton("Mostrar Clientes con Pedidos Pendientes");
+        JButton btnMostrarTodosLosClientes = new JButton("Mostrar Todos los Clientes");
         
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelBotones.add(btnActualizarDireccion);
-        panelBotones.add(btnActualizar);
+        panelBotones.add(btnMostrarClientesPendientes);
+        panelBotones.add(btnMostrarTodosLosClientes);
 
         add(scrollPane, BorderLayout.CENTER);
         add(panelBotones, BorderLayout.SOUTH);
         //acciones de los botones
         btnActualizarDireccion.addActionListener(e -> mostrarDialogoActualizar());
-        btnActualizar.addActionListener(e -> cargarClientes());
+        btnMostrarClientesPendientes.addActionListener(e -> cargarClientesPedidosPendientes());
+        btnMostrarTodosLosClientes.addActionListener(e -> cargarClientes());
 
     }
 
+
     private void cargarClientes() {
+        modeloTabla.setRowCount(0);
+        List<ClienteDto> clientes = gestorCliente.getAllClientes();
+        for (ClienteDto c : clientes) {
+            modeloTabla.addRow(new Object[]{
+                c.getId(),
+                c.getNombre(),
+                c.getCorreo(),
+                c.getTelefono(),
+                c.getDireccion()
+            });
+        }
+    }
+
+    private void cargarClientesPedidosPendientes() {
         modeloTabla.setRowCount(0);
         List<ClienteDto> clientes = gestorCliente.obtenerClientesConPedidosPendientes();
         for (ClienteDto c : clientes) {

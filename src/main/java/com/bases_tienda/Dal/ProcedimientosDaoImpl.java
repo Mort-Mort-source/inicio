@@ -169,6 +169,33 @@ public List<Cliente> obtenerClientesConPedidosPendientes() {
     return clientes;
 }
 
+
+@Override
+@SuppressWarnings("CallToPrintStackTrace")
+public List<Cliente> getAllClientes() {
+    List<Cliente> clientes = new ArrayList<>();
+    String sql = "{CALL GetAllClientes()}";
+    try (CallableStatement stmt = connection.prepareCall(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next()) {
+            Cliente c = new Cliente();
+            c.setId(rs.getInt("id_cliente"));
+            c.setNombre(rs.getString("nombre"));
+            c.setCorreo(rs.getString("correo"));
+            c.setTelefono(rs.getString("telefono"));
+            c.setDireccion(rs.getString("direccion"));
+            clientes.add(c);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return clientes;
+}
+
+
+
+
+
 @Override
     @SuppressWarnings("CallToPrintStackTrace")
 public List<Producto> obtenerTop5ProductosMejorCalificados() {

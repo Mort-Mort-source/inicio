@@ -1,5 +1,3 @@
-se necesita terminar pl
-se necesita agregae el store procedure de get al a la documentacion
-se necesita completar funciones de eliminar y actualizar(actualizar talvez la quite)
-hacer estore procedure para ello y meterlos en documentacion
-se necesita terminar la pl
+se necesita agregar el store procedure getAll clientes a la documentacion;
+se necesita corregir pl 
+se necesita checar funcinalidades nuevas
