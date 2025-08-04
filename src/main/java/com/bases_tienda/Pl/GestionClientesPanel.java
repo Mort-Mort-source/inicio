@@ -41,15 +41,20 @@ public class GestionClientesPanel extends JPanel {
 
         tablaClientes = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tablaClientes);
-
+         // Panel de botones
         JButton btnActualizarDireccion = new JButton("Actualizar Dirección y Teléfono");
-        btnActualizarDireccion.addActionListener(e -> mostrarDialogoActualizar());
-
+        JButton btnActualizar = new JButton("Actualizar");
+        
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelBotones.add(btnActualizarDireccion);
+        panelBotones.add(btnActualizar);
 
         add(scrollPane, BorderLayout.CENTER);
         add(panelBotones, BorderLayout.SOUTH);
+        //acciones de los botones
+        btnActualizarDireccion.addActionListener(e -> mostrarDialogoActualizar());
+        btnActualizar.addActionListener(e -> cargarClientes());
+
     }
 
     private void cargarClientes() {

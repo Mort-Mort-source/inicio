@@ -57,7 +57,7 @@ public class GestionProductosPanel extends JPanel {
 
         txtCategoriaBusqueda = new JTextField(5);
         txtUmbralStock = new JTextField(5);
-
+        // Configuración de los botones
         panelBotones.add(btnAgregar);
         panelBotones.add(btnActualizar);
         panelBotones.add(new JLabel("Categoría:"));
