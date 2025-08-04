@@ -11,7 +11,7 @@ import com.bases_tienda.BlDto.ProductoDto;
 import com.bases_tienda.DalEntities.Cliente;
 import com.bases_tienda.DalEntities.Producto;
 
-public class ProcedimientosDaoImpl implements ProcedimientosDao, mx.uam.proyecto.dal.ProcedimientosDao {
+public class ProcedimientosDaoImpl implements ProcedimientosDao{
 
     private final Connection connection;
 
@@ -26,7 +26,7 @@ public class ProcedimientosDaoImpl implements ProcedimientosDao, mx.uam.proyecto
     @Override
     @SuppressWarnings("CallToPrintStackTrace")
     public boolean registrarNuevoPedido(int idCliente, List<Integer> idsProductos, List<Integer> cantidades) {
-        // Supongamos que el SP acepta los productos como cadena separada por comas
+  
         String productosStr = String.join(",", idsProductos.stream().map(String::valueOf).toArray(String[]::new));
         String cantidadesStr = String.join(",", cantidades.stream().map(String::valueOf).toArray(String[]::new));
 
@@ -87,23 +87,7 @@ public boolean eliminarResenasYActualizarPromedio(int idProducto) {
     }
 }
 
-@Override
-    @SuppressWarnings("CallToPrintStackTrace")
-public boolean agregarProductoSinDuplicados(String nombre, int categoriaId, double precio, int stock) {
-    String sql = "{CALL AgregarProductoSinDuplicado(?, ?, ?, ?, ?)}";
-    try (CallableStatement stmt = connection.prepareCall(sql)) {
-        stmt.setString(1, nombre);
-        stmt.setString(2, ""); // descripción vacía, ajusta si tienes parámetro
-        stmt.setDouble(3, precio);
-        stmt.setInt(4, stock);
-        stmt.setInt(5, categoriaId);
-        stmt.execute();
-        return true;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
-    }
-}
+
 
 @Override
     @SuppressWarnings("CallToPrintStackTrace")
@@ -151,6 +135,7 @@ public List<Producto> obtenerProductosPorCategoria(int idCategoria) {
         while (rs.next()) {
             Producto p = new Producto();
             p.setNombre(rs.getString("producto"));
+            p.setIdCategoria(rs.getInt("id_categoria"));
             p.setDescripcion(rs.getString("descripcion"));
             p.setPrecio(rs.getDouble("precio"));
             p.setStock(rs.getInt("stock"));
@@ -228,6 +213,32 @@ public List<ProductoDto> getAllProductos() {
     }
 }
 
+    @Override
+    public boolean agregarProductoSinDuplicados(String nombre, int categoriaId, double precio, int stock, String descripcion) {
+         String nombre, 
+    int categoriaId, 
+    double precio, 
+    int stock,
+    String descripcion  // Nuevo parámetro
+) {
+    String sql = "{CALL AgregarProductoSinDuplicado(?, ?, ?, ?, ?)}";
+    try (CallableStatement stmt = connection.prepareCall(sql)) {
+        stmt.setString(1, nombre);
+        stmt.setString(2, descripcion);  // Usar el nuevo parámetro
+        stmt.setDouble(3, precio);
+        stmt.setInt(4, stock);
+        stmt.setInt(5, categoriaId);
+        stmt.execute();
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+  
+
+    
 
 
 

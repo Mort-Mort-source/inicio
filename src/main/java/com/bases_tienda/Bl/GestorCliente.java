@@ -5,12 +5,14 @@ package com.bases_tienda.Bl;
 import java.util.List;
 
 import com.bases_tienda.BlDto.ClienteDto;
+import com.bases_tienda.Dal.ProcedimientosDao;
 import com.bases_tienda.Dal.ProcedimientosDaoImpl;
 
-import mx.uam.proyecto.dal.ProcedimientosDao;
+
 
 public class GestorCliente {
 
+    @SuppressWarnings("FieldMayBeFinal")
     private ProcedimientosDao dao;
 
     public GestorCliente() {

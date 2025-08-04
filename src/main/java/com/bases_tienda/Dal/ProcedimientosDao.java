@@ -22,7 +22,7 @@ public interface ProcedimientosDao {
     boolean eliminarResenasYActualizarPromedio(int idProducto);
 
     // 5. Agregar producto evitando duplicados por nombre y categoría
-    boolean agregarProductoSinDuplicados(String nombre, int categoriaId, double precio, int stock);
+    boolean agregarProductoSinDuplicados(String nombre, int categoriaId, double precio, int stock, String descripcion);
 
     // 6. Actualizar dirección y teléfono de un cliente
     boolean actualizarDireccionYTelefonoCliente(int idCliente, String nuevaDireccion, String nuevoTelefono);
@@ -40,4 +40,8 @@ public interface ProcedimientosDao {
 
     // 10. Top 5 productos con mejor calificación promedio
     List<Producto> obtenerTop5ProductosMejorCalificados();
+
+    // 11.obtener productos todos los productos
+    List<Producto> getAllProductos();
+    
 }
